@@ -9,7 +9,7 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <Header />
-      <div className="app__body">
+      <div className="app__body ">
       <Quran/>
         <Sidebar />
        

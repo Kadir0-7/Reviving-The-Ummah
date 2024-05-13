@@ -1,12 +1,12 @@
-
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import "../../index.css"
+import { Dropdown, DropdownMenuItemType, IDropdownStyles,  } from '@fluentui/react/lib/Dropdown';
 import { useEffect, useState } from "react";
 
 const Quran: React.FC = () => {
 // const endPoint ="http://api.alquran.cloud/v1/quran/en.asad"
 const [quranText, setQuranText] = useState([])
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: 300 },
+  dropdown: { width: 300 , height:300},
 };
 const surahOptions = (quranText: any) =>{
   const option = quranText.map((name: any) =>{
@@ -15,18 +15,7 @@ const surahOptions = (quranText: any) =>{
   
   return option
 }
-const options: IDropdownOption[] = [
-  { key: 'fruitsHeader', text: 'Fruits', itemType: DropdownMenuItemType.Header },
-  { key: 'apple', text: 'Apple' },
-  { key: 'banana', text: 'Banana' },
-  { key: 'orange', text: 'Orange', disabled: true },
-  { key: 'grape', text: 'Grape' },
-  { key: 'divider_1', text: '-', itemType: DropdownMenuItemType.Divider },
-  { key: 'vegetablesHeader', text: 'Vegetables', itemType: DropdownMenuItemType.Header },
-  { key: 'broccoli', text: 'Broccoli' },
-  { key: 'carrot', text: 'Carrot' },
-  { key: 'lettuce', text: 'Lettuce' },
-];
+
 const getQuran = async () => {
     const response = await fetch("http://api.alquran.cloud/v1/quran/quran-uthmani ");
 const movies = await response.json();
@@ -40,15 +29,18 @@ console.log(surahOptions(quranText))
 },[])
 
     return (
-      <div className="quranPage">
-     <Dropdown
+      <div className="d-flex align-content-center h-100">
+       
+     <Dropdown 
+     className=''
          placeholder="Select an option"
          label="Pick Your Surah"
          options={surahOptions(quranText)}
          styles={dropdownStyles}
        
       />
-        <audio controls src=""></audio>
+      
+        {/* <audio controls src=""></audio> */}
       </div>
     );
   }
