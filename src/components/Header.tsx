@@ -15,12 +15,10 @@ const Header: React.FC = () => {
           <li><a href="/">Home</a></li>
           <li><a href="/explore">Explore Islam</a></li>
           <li><a href="/notifications">Hadiths</a></li>
-          <li><a href="/messages">Quran</a></li>
+          <li><a href="/quran-page/Quran.tsx">Quran</a></li>
         </ul>
         <div className="navbar__profile">
-          {/* You can add profile picture and other profile information here */}
           
-          {/* <span>Username</span> */}
         </div>
       </nav>
     </header>
