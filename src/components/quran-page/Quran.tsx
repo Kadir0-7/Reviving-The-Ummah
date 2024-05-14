@@ -1,13 +1,12 @@
 import "../../index.css"
-import { Dropdown, DropdownMenuItemType, IDropdownStyles,  } from '@fluentui/react/lib/Dropdown';
+import { Dropdown,   } from '@fluentui/react/lib/Dropdown';
 import { useEffect, useState } from "react";
 
 const Quran: React.FC = () => {
 // const endPoint ="http://api.alquran.cloud/v1/quran/en.asad"
 const [quranText, setQuranText] = useState([])
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: 300 , height:300},
-};
+const [surahDisplay , setSurahDisplay]= useState([])
+
 const surahOptions = (quranText: any) =>{
   const option = quranText.map((name: any) =>{
     return { key: name.englishName, text: name.englishName ,data:name.ayahs}
@@ -15,6 +14,9 @@ const surahOptions = (quranText: any) =>{
   
   return option
 }
+const surah = surahDisplay.map((e: any)=>e?.text).join(" {۞} ")
+
+
 
 const getQuran = async () => {
     const response = await fetch("http://api.alquran.cloud/v1/quran/quran-uthmani ");
@@ -25,23 +27,29 @@ setQuranText(surahs)
 }
 useEffect(() => {
 getQuran()
-console.log(surahOptions(quranText))
+console.log(surahDisplay)
+console.log(surah)
 },[])
 
     return (
-      <div className="d-flex align-content-center h-100">
+      <div className="quranPage">
        
      <Dropdown 
-     className=''
+     className='justify-content-center'
          placeholder="Select an option"
          label="Pick Your Surah"
          options={surahOptions(quranText)}
-         styles={dropdownStyles}
        
+       onChange={(_,option) => {setSurahDisplay(option?.data)}}
       />
-      
+      <div>
+      <p dir="rtl">{surah}</p>
+
         {/* <audio controls src=""></audio> */}
       </div>
+     
+      </div>
+     
     );
   }
   
