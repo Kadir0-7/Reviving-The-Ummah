@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import Quran from './components/quran-page/Quran';
+import Quran from './components/Quran';
 
 
 

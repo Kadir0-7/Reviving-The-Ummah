@@ -15,7 +15,7 @@ const Header: React.FC = () => {
           <li><a href="/">Home</a></li>
           <li><a href="/explore">Explore Islam</a></li>
           <li><a href="/notifications">Hadiths</a></li>
-          <li><a href="/quran-page/Quran.tsx">Quran</a></li>
+          <li><a href="../components/Quran'">Quran</a></li>
         </ul>
         <div className="navbar__profile">
           

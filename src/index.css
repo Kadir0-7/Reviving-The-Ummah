@@ -42,7 +42,8 @@
 }
 .quranPage{
   display: flex;
-  justify-content: center;
+  align-items: center;
 flex-direction: column;
   margin: 10px;
 }
+
