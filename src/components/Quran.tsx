@@ -1,68 +1,87 @@
-import { Card, CardPreview, makeStyles, shorthands } from "@fluentui/react-components";
-import "../index.css"
-import { Dropdown,   } from '@fluentui/react/lib/Dropdown';
-import { useEffect, useState } from "react";
+import { Card, CardHeader, CardPreview } from "@fluentui/react-components";
+import "../index.css";
+import { Dropdown, IDropdownOption } from "@fluentui/react/lib/Dropdown";
+import { useEffect, useState, useMemo } from "react";
 
-
-
-
+interface Surah {
+  id: number;
+  surahName: string;
+}
 
 const Quran: React.FC = () => {
- const endPoint ="../../surahs.json"
-const [quranText, setQuranText] = useState([])
-const [surahDisplay , setSurahDisplay]= useState([])
+  const endPoint = "../../surahs.json";
+  const [quranText, setQuranText] = useState<Surah[]>([]);
+  const [surahDisplay, setSurahDisplay] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch list of surahs
+  const getSurahList = async () => {
+    try {
+      const response = await fetch(endPoint);
+      if (!response.ok) throw new Error("Failed to fetch Surah list.");
+      const surahList = await response.json();
+      setQuranText(surahList);
+    } catch (err) {
+      setError("ERROR");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const surahOptions = (quranText: any) =>{
-  const option = quranText.map((surah: any) =>{
-    return { key: surah.surahName, text: surah.surahName ,data:surah.id}
-  }  )
-  
-  return option
-}
-const surah = surahDisplay.map((e: any)=>e).join(" ۞ ")
+  // Fetch selected surah content
+  const handleSurahChange = async (id: number) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`https://quranapi.pages.dev/api/${id}.json`);
+      if (!response.ok) throw new Error("Failed to fetch Surah data.");
+      const surahData = await response.json();
+      setSurahDisplay(surahData.arabic1.join(" ۞ "));
+    } catch (error) {
+      setError("ERROR");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const getSurahList = async () => {
-  const response = await fetch(endPoint);
-  const surahList = await response.json();
-  setQuranText(surahList)
-}
-const onChange = async (id:number) => {
-  const response = await fetch(`https://quranapi.pages.dev/api/${id}.json`);
-  const surahData = await response.json()
-  setSurahDisplay(surahData.arabic1)
-}
+  useEffect(() => {
+    getSurahList();
+  }, []);
 
+  // Generate dropdown options, memoized for efficiency
+  const surahOptions = useMemo(
+    () =>
+      quranText.map((surah) => ({
+        key: surah.id,
+        text: surah.surahName,
+      })),
+    [quranText]
+  );
 
-
-useEffect(() => {
-getSurahList()
-},[])
-
-    return (
-      <div className="quranPage">
-    
-     <Dropdown 
-     className='justify-content-center quranDropdown'
-         placeholder="Select an option"
-         label="Pick Your Surah"
-         options={surahOptions(quranText)}
-       dropdownWidth={300 }
-       onChange={(_,option) => {onChange(option?.data)}}
-      /> 
+  return (
+    <div className="quran-container">
+      <Dropdown
       
-      <div>
-        
+        placeholder="Select a Surah"
+        options={surahOptions}
+        onChange={(_, option) => handleSurahChange(option?.key as number)}
+        className="quran-dropdown"
+      />
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="error-message">{error}</p>
+      ) : (
+        <Card className="quran-card" >
+          <CardHeader><p>{"بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"}</p></CardHeader>
           <CardPreview>
-      <p style={{fontSize:30}} dir="rtl">{surah}</p>
-      </CardPreview>
+            <p>{surahDisplay}</p>
+          </CardPreview>
+        </Card>
+      )}
+    </div>
+  );
+};
 
-
-      </div>
-     
-      </div>
-     
-    );
-  }
-  
-  export default Quran;
+export default Quran;
