@@ -74,7 +74,7 @@ const Quran: React.FC = () => {
         <p className="error-message">{error}</p>
       ) : (
         <Card className="quran-card" >
-          <CardHeader><p>{"بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"}</p></CardHeader>
+          <CardHeader header={"بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"}/>
           <CardPreview>
             <p>{surahDisplay}</p>
           </CardPreview>
