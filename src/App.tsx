@@ -1,20 +1,22 @@
 import React from 'react';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import Quran from './components/Quran';
-
-
+import Quran from './pages/Quran';
+import "./App.css"
+import Home from './pages/Home';
+import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
-    <div className="app">
-      <Header />
-      <div className="app__body ">
-      <Quran/>
-        <Sidebar />
-       
+    <div className="App">
+      <BrowserRouter>
+      <Routes>
+        <Route index element={<Home/>} />
+        <Route path='/home' element={<Home/>} />
+        <Route path='/quran' element={<Quran/>} />
+      </Routes>
+      </BrowserRouter>
+      
       </div>
-    </div>
+  
   );
 }
 
